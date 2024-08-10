@@ -52,7 +52,7 @@ LIMIT 10;
 --  Compostion of viewership on basis of maturity
 
 SELECT 
-	   CASE
+       CASE
        WHEN Mature='True' THEN 'Mature'
        ELSE 'NOT MATURE'
        END AS Content_type,
@@ -93,8 +93,8 @@ ORDER BY watchtime_percentage DESC;
 --  Most watched streamer according to language
 
 SELECT _language,
-	   channel_name,
-	   MAX(watch_time_in_mins) AS watch_time
+       channel_name,
+       MAX(watch_time_in_mins) AS watch_time
 FROM Twitch
 WHERE (_language,watch_time_in_mins) IN (SELECT _language,
                                          MAX(Watch_time_in_mins)
@@ -115,8 +115,8 @@ ORDER BY watch_time DESC;
 --  Streamers with most following according to language
 
 SELECT _language,
-	   channel_name,
-	   MAX(followers) AS followers
+       channel_name,
+       MAX(followers) AS followers
 FROM Twitch
 WHERE (_language,followers) IN (SELECT _language,
                                 MAX(followers)
