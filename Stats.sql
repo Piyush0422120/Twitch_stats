@@ -115,7 +115,7 @@ GROUP BY MATURE;
 --  Compostion of streamtime on basis of maturity
 
 SELECT 
-	   CASE
+       CASE
        WHEN Mature='True' THEN 'Mature'
        ELSE 'NOT MATURE'
        END AS Content_type,
@@ -130,7 +130,7 @@ GROUP BY MATURE;
 --  Distribution of followers on basis of maturity
 
 SELECT 
-	   CASE
+       CASE
        WHEN Mature='True' THEN 'Mature'
        ELSE 'NOT MATURE'
        END AS Content_type,
@@ -155,9 +155,9 @@ ORDER BY number_of_channels DESC;
 --  watchtime distribution according to language
 
 SELECT _language,
-	   SUM(watch_time_in_mins) AS watchtime,
-	   ROUND(SUM(watch_time_in_mins)/(SELECT SUM(watch_time_in_mins)
-					  FROM twitch)*100,2) AS watchtime_percentage
+       SUM(watch_time_in_mins) AS watchtime,
+       ROUND(SUM(watch_time_in_mins)/(SELECT SUM(watch_time_in_mins)
+				      FROM twitch)*100,2) AS watchtime_percentage
 FROM twitch
 GROUP BY _language
 ORDER BY watchtime_percentage DESC;
@@ -167,9 +167,9 @@ ORDER BY watchtime_percentage DESC;
 --  streamtime distribution according to language
 
 SELECT _language,
-	   SUM(stream_time_in_mins) AS watchtime,
-	   ROUND(SUM(stream_time_in_mins)/(SELECT SUM(stream_time_in_mins)
-					   FROM twitch)*100,2) AS streamtime_percentage
+      SUM(stream_time_in_mins) AS watchtime,
+      ROUND(SUM(stream_time_in_mins)/(SELECT SUM(stream_time_in_mins)
+				      FROM twitch)*100,2) AS streamtime_percentage
 FROM twitch
 GROUP BY _language
 ORDER BY streamtime_percentage DESC;
@@ -179,9 +179,9 @@ ORDER BY streamtime_percentage DESC;
 --  followers distribution according to language
 
 SELECT _language,
-	   SUM(followers) AS watchtime,
-	   ROUND(SUM(followers)/(SELECT SUM(followers)
-				 FROM twitch)*100,2) AS followers_percentage
+       SUM(followers) AS watchtime,
+       ROUND(SUM(followers)/(SELECT SUM(followers)
+			     FROM twitch)*100,2) AS followers_percentage
 FROM twitch
 GROUP BY _language
 ORDER BY followers_percentage DESC;
@@ -191,8 +191,8 @@ ORDER BY followers_percentage DESC;
 --  Most watched streamer according to language
 
 SELECT _language,
-	   channel_name,
-	   MAX(watch_time_in_mins) AS watch_time
+       channel_name,
+       MAX(watch_time_in_mins) AS watch_time
 FROM Twitch
 WHERE (_language,watch_time_in_mins) IN (SELECT _language,
 					 MAX(Watch_time_in_mins)
@@ -221,8 +221,8 @@ ORDER BY stream_time DESC;
 --  Streamers with most following according to language
 
 SELECT _language,
-	   channel_name,
-	   MAX(followers) AS followers
+      channel_name,
+      MAX(followers) AS followers
 FROM Twitch
 WHERE (_language,followers) IN (SELECT _language,
 			        MAX(followers)
