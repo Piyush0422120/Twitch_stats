@@ -5,7 +5,7 @@ USE twitch_stats;
 -- Top 10 channels on basis of watch time
 
 SELECT channel_name,
-	   watch_time_in_mins
+       watch_time_in_mins
 FROM twitch
 ORDER BY watch_time_in_mins DESC
 LIMIT 10;
@@ -15,7 +15,7 @@ LIMIT 10;
 -- Top 10 channels on basis of stream time
 
 SELECT channel_name,
-	   stream_time_in_mins
+       stream_time_in_mins
 FROM twitch
 ORDER BY stream_time_in_mins DESC
 LIMIT 10;
@@ -25,7 +25,7 @@ LIMIT 10;
 -- Top 10 channels on basis of watchtime/ one minute of stream
 
 SELECT channel_name,
-	   watch_time_in_mins/stream_time_in_mins AS watchtime_per_min_stream
+        watch_time_in_mins/stream_time_in_mins AS watchtime_per_min_stream
 FROM twitch
 ORDER BY  watchtime_per_min_stream DESC
 LIMIT 10;
@@ -35,7 +35,7 @@ LIMIT 10;
 -- Top 10 channels on basis of peak viewers
 
 SELECT Channel_name,
-	   peak_viewers
+       peak_viewers
 FROM twitch
 ORDER BY peak_viewers  DESC
 LIMIT 10;
@@ -45,7 +45,7 @@ LIMIT 10;
 -- Top 10 channels on basis of average viewers
 
 SELECT Channel_name,
-	   average_viewers
+       average_viewers
 FROM twitch
 ORDER BY average_viewers  DESC
 LIMIT 10;
@@ -55,7 +55,7 @@ LIMIT 10;
 -- Top 10 channels on basis of followers
 
 SELECT Channel_name,
-	   followers
+       followers
 FROM twitch
 ORDER BY followers  DESC
 LIMIT 10;
@@ -65,7 +65,7 @@ LIMIT 10;
 -- Top 10 Mature (16-18+ content) streamers on basis of watchtime
 
 SELECT Channel_name,
-	   watch_time_in_mins
+       watch_time_in_mins
 FROM twitch
 WHERE Mature='True'
 ORDER BY watch_time_in_mins  DESC
@@ -76,7 +76,7 @@ LIMIT 10;
 -- Top 10 Non Mature streamers on basis of watchtime
 
 SELECT Channel_name,
-	   watch_time_in_mins
+       watch_time_in_mins
 FROM twitch
 WHERE Mature='False'
 ORDER BY watch_time_in_mins  DESC
@@ -87,11 +87,11 @@ LIMIT 10;
 --  Total number of mature and non mature streamers
 
 SELECT 
-	   CASE
+  CASE
        WHEN Mature='True' THEN 'Mature'
        ELSE 'NOT MATURE'
-       END AS Content_type,
-       COUNT(Channel_name) AS channels
+  END AS Content_type,
+  COUNT(Channel_name) AS channels
 FROM twitch
 GROUP BY MATURE;
 
@@ -100,13 +100,13 @@ GROUP BY MATURE;
 --  Compostion of viewership on basis of maturity
 
 SELECT 
-	   CASE
+       CASE
        WHEN Mature='True' THEN 'Mature'
        ELSE 'NOT MATURE'
        END AS Content_type,
        SUM(Watch_time_in_mins) AS minutes_watched,
-	   ROUND(SUM(Watch_time_in_mins)/(SELECT SUM(watch_time_in_mins)
-									  FROM twitch)*100,2) AS Percentage_of_viwership
+       ROUND(SUM(Watch_time_in_mins)/(SELECT SUM(watch_time_in_mins)
+				      FROM twitch)*100,2) AS Percentage_of_viwership
 FROM twitch
 GROUP BY MATURE;
 
@@ -121,7 +121,7 @@ SELECT
        END AS Content_type,
        SUM(stream_time_in_mins) AS minutes_watched,
 	   ROUND(SUM(stream_time_in_mins)/(SELECT SUM(stream_time_in_mins)
-									  FROM twitch)*100,2) AS Percentage_of_streaming_time
+					   FROM twitch)*100,2) AS Percentage_of_streaming_time
 FROM twitch
 GROUP BY MATURE;
 
@@ -136,7 +136,7 @@ SELECT
        END AS Content_type,
        SUM(followers) AS minutes_watched,
 	   ROUND(SUM(followers)/(SELECT SUM(followers)
-									  FROM twitch)*100,2) AS following_percentage
+				 FROM twitch)*100,2) AS following_percentage
 FROM twitch
 GROUP BY MATURE;
 
@@ -145,7 +145,7 @@ GROUP BY MATURE;
 --  Distribution of streamers according to language
 
 SELECT _language,
-	   COUNT(channel_name) AS number_of_channels
+      COUNT(channel_name) AS number_of_channels
 FROM twitch
 GROUP BY _language
 ORDER BY number_of_channels DESC;
@@ -157,7 +157,7 @@ ORDER BY number_of_channels DESC;
 SELECT _language,
 	   SUM(watch_time_in_mins) AS watchtime,
 	   ROUND(SUM(watch_time_in_mins)/(SELECT SUM(watch_time_in_mins)
-									  FROM twitch)*100,2) AS watchtime_percentage
+					  FROM twitch)*100,2) AS watchtime_percentage
 FROM twitch
 GROUP BY _language
 ORDER BY watchtime_percentage DESC;
@@ -169,7 +169,7 @@ ORDER BY watchtime_percentage DESC;
 SELECT _language,
 	   SUM(stream_time_in_mins) AS watchtime,
 	   ROUND(SUM(stream_time_in_mins)/(SELECT SUM(stream_time_in_mins)
-									  FROM twitch)*100,2) AS streamtime_percentage
+					   FROM twitch)*100,2) AS streamtime_percentage
 FROM twitch
 GROUP BY _language
 ORDER BY streamtime_percentage DESC;
@@ -181,7 +181,7 @@ ORDER BY streamtime_percentage DESC;
 SELECT _language,
 	   SUM(followers) AS watchtime,
 	   ROUND(SUM(followers)/(SELECT SUM(followers)
-									  FROM twitch)*100,2) AS followers_percentage
+				 FROM twitch)*100,2) AS followers_percentage
 FROM twitch
 GROUP BY _language
 ORDER BY followers_percentage DESC;
@@ -195,8 +195,8 @@ SELECT _language,
 	   MAX(watch_time_in_mins) AS watch_time
 FROM Twitch
 WHERE (_language,watch_time_in_mins) IN (SELECT _language,
-												 MAX(Watch_time_in_mins)
-										 FROM twitch
+					 MAX(Watch_time_in_mins)
+					 FROM twitch
                                          GROUP BY _language ) 
 GROUP BY _language, channel_name
 ORDER BY watch_time DESC;
@@ -206,13 +206,13 @@ ORDER BY watch_time DESC;
 --  streamers with most streaming minutes according to language
 
 SELECT _language,
-	   channel_name,
-	   MAX(stream_time_in_mins) AS stream_time
+      channel_name,
+      MAX(stream_time_in_mins) AS stream_time
 FROM Twitch
 WHERE (_language,stream_time_in_mins) IN (SELECT _language,
-												 MAX(stream_time_in_mins)
-										 FROM twitch
-                                         GROUP BY _language )
+					  MAX(stream_time_in_mins)
+					  FROM twitch
+                                          GROUP BY _language )
 GROUP BY _language, channel_name
 ORDER BY stream_time DESC;
 
@@ -225,9 +225,9 @@ SELECT _language,
 	   MAX(followers) AS followers
 FROM Twitch
 WHERE (_language,followers) IN (SELECT _language,
-												 MAX(followers)
-										 FROM twitch
-                                         GROUP BY _language )
+			        MAX(followers)
+		                FROM twitch
+                                GROUP BY _language )
 GROUP BY _language, channel_name
 ORDER BY followers DESC;
 
